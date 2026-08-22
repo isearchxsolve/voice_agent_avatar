@@ -1,0 +1,12 @@
+# Voice Agent Bridge - Free Stack
+fastapi==0.115.6
+uvicorn==0.32.1
+websockets==14.1
+numpy==2.2.1
+
+# For config
+python-dotenv==1.0.1
+pydantic==2.10.3
+
+# Kaggle-specific (optional)
+# Kaggle secrets are supplied by the notebook runtime; no package is required.

@@ -1,0 +1,65 @@
+services:
+  agent:
+    build:
+      context: ..
+      dockerfile: agent/Dockerfile
+    env_file:
+      - path: ../.env
+        required: false
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8080/health')"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  widget:
+    build: ../web-widget
+    ports:
+      - "3000:80"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "-", "http://localhost:80"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  webhook-server:
+    build: ../webhook-server
+    env_file:
+      - path: ../.env
+        required: false
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  prometheus:
+    image: prom/prometheus:v3.0.0
+    volumes:
+      - ../monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    ports:
+      - "9090:9090"
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana:11.4.0
+    volumes:
+      - ../monitoring/grafana/datasources:/etc/grafana/provisioning/datasources:ro
+      - ../monitoring/grafana/dashboards:/etc/grafana/provisioning/dashboards:ro
+    ports:
+      - "3001:3000"
+    restart: unless-stopped
+
+  loki:
+    image: grafana/loki:3.3.2
+    ports:
+      - "3100:3100"
+    restart: unless-stopped
+

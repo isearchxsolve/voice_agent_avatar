@@ -1,0 +1,10 @@
+.env
+.env.*
+!.env.example
+**/__pycache__/
+**/*.py[cod]
+.pytest_cache/
+web-widget/node_modules/
+web-widget/dist/
+.git/
+FLEET_WORKLOG.md

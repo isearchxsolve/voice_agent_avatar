@@ -1,0 +1,9 @@
+fastapi==0.115.6
+uvicorn==0.32.1
+httpx==0.28.1
+prometheus-client==0.21.1
+pytz==2024.2
+websockets==14.1
+numpy==2.2.1
+# Optional extras: `pip install f5-tts faster-whisper` for local engines,
+# and LiveKit/OpenAI/ElevenLabs only for explicit ALLOW_PAID_PROVIDERS=1 mode.
